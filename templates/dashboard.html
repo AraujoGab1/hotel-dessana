@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | Dessana{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">VISÃO GERAL</div><h1>Dashboard</h1><p>Acompanhe a operação do Dessana Amazon Resort em um só lugar.</p></div>
+  <div class="date-pill">🌿 {{ "now"|default("Hoje") }}</div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="stat-icon">▣</div><span>Total de quartos</span><strong>{{ total_quartos }}</strong><small>Estrutura cadastrada</small></div>
+  <div class="stat-card"><div class="stat-icon">◈</div><span>Quartos disponíveis</span><strong>{{ disponiveis }}</strong><small>Prontos para reserva</small></div>
+  <div class="stat-card"><div class="stat-icon">◷</div><span>Reservas confirmadas</span><strong>{{ reservas }}</strong><small>Reservas ativas</small></div>
+  <div class="stat-card accent"><div class="stat-icon">♧</div><span>Taxa de ocupação</span><strong>{{ taxa }}%</strong><small>{{ ocupados }} quartos ocupados</small></div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="panel">
+    <div class="panel-head"><div><h3>Próximas reservas</h3><p>Movimentações mais recentes</p></div><a href="{{ url_for('reservas') }}" class="text-link">Ver todas →</a></div>
+    <div class="table-wrap">
+      <table><thead><tr><th>Hóspede</th><th>Acomodação</th><th>Entrada</th><th>Saída</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for r in ultimas %}
+        <tr><td><b>{{ r.hospede }}</b></td><td>{{ r.categoria }} · {{ r.quarto }}</td><td>{{ r.data_entrada|format_date }}</td><td>{{ r.data_saida|format_date }}</td><td><span class="status {{ r.status|lower|replace('-','') }}">{{ r.status }}</span></td></tr>
+      {% else %}<tr><td colspan="5" class="empty">Nenhuma reserva cadastrada.</td></tr>{% endfor %}
+      </tbody></table>
+    </div>
+  </div>
+  <div class="panel occupancy">
+    <div class="panel-head"><div><h3>Resumo de hoje</h3><p>Indicadores operacionais</p></div></div>
+    <div class="circle-wrap"><div class="circle" style="--value: {{ taxa }}%;"><div><strong>{{ taxa }}%</strong><span>ocupação</span></div></div></div>
+    <div class="mini-stats"><div><span>Check-ins</span><b>{{ checkins }}</b></div><div><span>Check-outs</span><b>{{ checkouts }}</b></div><div><span>Hóspedes cadastrados</span><b>{{ hospedes }}</b></div></div>
+  </div>
+</div>
+{% endblock %}

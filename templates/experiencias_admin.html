@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Experiências | Dessana{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">AMAZÔNIA</div><h1>Experiências</h1><p>Gerencie os passeios e atividades exibidos no portal do hóspede.</p></div><button class="primary-btn small" onclick="openModal('modal-experiencia')">+ NOVA EXPERIÊNCIA</button></div>
+
+<div class="cards-grid">
+{% for e in experiencias %}
+<div class="room-card">
+  <div class="room-top"><span class="room-tag">{{ e.categoria }}</span><span>{{ e.icone or '🌿' }}</span></div>
+  <h3>{{ e.titulo }}</h3>
+  <p>{{ e.descricao or 'Sem descrição.' }}</p>
+  <div class="room-meta"><span>⏱ {{ e.duracao or '—' }}</span></div>
+  <form method="post" action="{{ url_for('excluir_experiencia', id=e.id) }}" onsubmit="return confirm('Remover esta experiência?')" style="margin-top:14px;">
+    <button class="icon-btn danger" style="width:100%;">Remover</button>
+  </form>
+</div>
+{% else %}<div class="empty">Nenhuma experiência cadastrada.</div>{% endfor %}
+</div>
+
+<div class="modal" id="modal-experiencia">
+  <div class="modal-card">
+    <button class="close" onclick="closeModal('modal-experiencia')">×</button>
+    <div class="eyebrow">NOVA EXPERIÊNCIA</div>
+    <h2>Cadastrar experiência</h2>
+    <form method="post" action="{{ url_for('salvar_experiencia') }}" class="form-grid">
+      <div class="full"><label>Título</label><input name="titulo" placeholder="Ex.: Passeio de canoa ao amanhecer" required></div>
+      <div><label>Categoria</label><input name="categoria" placeholder="Passeios, Trilhas, Gastronomia, Spa..." required></div>
+      <div><label>Duração</label><input name="duracao" placeholder="Ex.: 2h"></div>
+      <div><label>Ícone (emoji)</label><input name="icone" placeholder="🚤" maxlength="4"></div>
+      <div><label>Imagem (caminho em /static/images/)</label><input name="imagem" placeholder="guest/nome-da-foto.jpg"></div>
+      <div class="full"><label>Descrição</label><textarea name="descricao"></textarea></div>
+      <div class="full form-actions">
+        <button type="button" class="secondary-btn" onclick="closeModal('modal-experiencia')">Cancelar</button>
+        <button class="primary-btn">Salvar experiência</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

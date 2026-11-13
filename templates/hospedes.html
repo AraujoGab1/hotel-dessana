@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Hóspedes | Dessana{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">CADASTROS</div><h1>Hóspedes</h1><p>Centralize os dados dos hóspedes do resort.</p></div><button class="primary-btn small" onclick="openModal('modal-hospede')">+ NOVO HÓSPEDE</button></div>
+<div class="panel">
+  <div class="toolbar"><input class="search" data-search="hospedes" placeholder="⌕  Buscar por nome, CPF ou e-mail..."><span>{{ hospedes|length }} registros</span></div>
+  <div class="table-wrap"><table id="hospedes"><thead><tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>E-mail</th><th>Ações</th></tr></thead><tbody>
+  {% for h in hospedes %}<tr data-search-row><td><b>{{ h.nome }}</b></td><td>{{ h.cpf or '—' }}</td><td>{{ h.telefone or '—' }}</td><td>{{ h.email or '—' }}</td><td><form method="post" action="{{ url_for('excluir_hospede', id=h.id) }}" onsubmit="return confirm('Excluir este hóspede?')"><button class="icon-btn danger" title="Excluir">×</button></form></td></tr>
+  {% else %}<tr><td colspan="5" class="empty">Nenhum hóspede cadastrado.</td></tr>{% endfor %}
+  </tbody></table></div>
+</div>
+<div class="modal" id="modal-hospede"><div class="modal-card"><button class="close" onclick="closeModal('modal-hospede')">×</button><div class="eyebrow">NOVO CADASTRO</div><h2>Cadastrar hóspede</h2><form method="post" action="{{ url_for('salvar_hospede') }}" class="form-grid"><div class="full"><label>Nome completo</label><input name="nome" required></div><div><label>CPF</label><input name="cpf"></div><div><label>Telefone</label><input name="telefone"></div><div><label>E-mail</label><input type="email" name="email"></div><div class="full"><label>Observações</label><textarea name="observacoes"></textarea></div><div class="full form-actions"><button type="button" class="secondary-btn" onclick="closeModal('modal-hospede')">Cancelar</button><button class="primary-btn" type="submit">Salvar hóspede</button></div></form></div></div>
+{% endblock %}

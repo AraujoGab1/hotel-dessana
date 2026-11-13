@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Dessana Amazon Resort | Administração{% endblock %}
+
+{% block public_content %}
+
+<div class="landing">
+
+    <div class="landing-overlay"></div>
+
+    <header class="landing-nav">
+
+        <div class="landing-logo">
+
+            <div class="brand-mark large">D</div>
+
+            <div>
+                <strong>DESSANA</strong>
+                <span>AMAZON RESORT</span>
+                <small>ALL INCLUSIVE</small>
+            </div>
+
+        </div>
+
+
+        <div class="landing-links">
+
+            <a href="{{ url_for('administracao') }}">
+                ÁREA ADMINISTRATIVA
+            </a>
+
+            <a href="{{ url_for('administracao') }}" class="nav-login">
+                ENTRAR
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <div class="hero-copy">
+
+        <div class="eyebrow">
+            🌿 NO CORAÇÃO DA AMAZÔNIA
+        </div>
+
+        <h1>
+            Uma experiência<br>
+            <em>inesquecível.</em>
+        </h1>
+
+        <p>
+            Hospitalidade de alto padrão em perfeita harmonia com a floresta.
+        </p>
+
+        <a href="{{ url_for('login') }}" class="gold-btn">
+            RESERVAR AGORA
+            <span>→</span>
+        </a>
+
+    </div>
+
+
+    <div class="hero-bottom">
+
+        <span>HOSPEDAGEM</span>
+        <span>•</span>
+        <span>GASTRONOMIA</span>
+        <span>•</span>
+        <span>EXPERIÊNCIAS</span>
+        <span>•</span>
+        <span>NATUREZA</span>
+
+    </div>
+
+</div>
+
+<div class="landing-section">
+  <div class="section-heading">
+    <div class="eyebrow">ACOMODAÇÕES</div>
+    <h2>Nossos bangalôs</h2>
+    <p>Cada bangalô foi pensado para uma imersão total na Amazônia, com conforto e vista privilegiada.</p>
+  </div>
+  <div class="landing-grid">
+    {% for c in destaque_quartos %}
+    <a class="landing-card" href="{{ url_for('login') }}">
+      <div class="landing-card-img" style="background-image:url('{{ url_for('static', filename='images/' ~ (c.imagem or 'guest/hero-rio.jpg')) }}');"></div>
+      <div class="landing-card-body">
+        <h3>{{ c.nome }}</h3>
+        <p>{{ c.descricao[:110] }}{% if c.descricao and c.descricao|length > 110 %}…{% endif %}</p>
+        <div class="landing-card-price">R$ {{ '%.2f'|format(c.valor_diaria)|replace('.', ',') }}<small>/noite</small></div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="landing-section alt">
+  <div class="section-heading">
+    <div class="eyebrow">AMAZÔNIA</div>
+    <h2>Experiências exclusivas</h2>
+    <p>Viva momentos únicos em contato direto com a floresta e o rio.</p>
+  </div>
+  <div class="landing-grid">
+    {% for e in destaque_experiencias %}
+    <a class="landing-card" href="{{ url_for('login') }}">
+      <div class="landing-card-img" style="background-image:url('{{ url_for('static', filename='images/' ~ (e.imagem or 'guest/hero-rio.jpg')) }}');"></div>
+      <div class="landing-card-body">
+        <span class="landing-card-icon">{{ e.icone or '🌿' }}</span>
+        <h3>{{ e.titulo }}</h3>
+        <p>{{ e.descricao[:110] }}{% if e.descricao and e.descricao|length > 110 %}…{% endif %}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="landing-section">
+  <div class="section-heading">
+    <div class="eyebrow">RESORT</div>
+    <h2>Área de lazer</h2>
+    <p>Espaços para relaxar, saborear e contemplar a floresta em qualquer momento do dia.</p>
+  </div>
+  <div class="landing-grid">
+    {% for i in destaque_lazer %}
+    <a class="landing-card" href="{{ url_for('login') }}">
+      <div class="landing-card-img" style="background-image:url('{{ url_for('static', filename='images/' ~ (i.imagem or 'guest/hero-rio.jpg')) }}');"></div>
+      <div class="landing-card-body">
+        <span class="landing-card-icon">{{ i.icone or '🌿' }}</span>
+        <h3>{{ i.nome }}</h3>
+        <p>{{ i.descricao[:110] }}{% if i.descricao and i.descricao|length > 110 %}…{% endif %}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="landing-cta" style="background-image:linear-gradient(90deg,rgba(6,20,15,.88),rgba(6,20,15,.55)),url('{{ url_for('static', filename='images/guest/hero-rio.jpg') }}');">
+  <div>
+    <div class="eyebrow">RESERVE JÁ</div>
+    <h2>Sua próxima estadia começa aqui.</h2>
+    <p>Acesse o portal para consultar acomodações e solicitar sua reserva com segurança.</p>
+  </div>
+  <a href="{{ url_for('login') }}" class="gold-btn">RESERVAR AGORA <span>→</span></a>
+</div>
+
+<footer class="site-footer">
+  <div class="brand-mark">D</div>
+  <p>DESSANA AMAZON RESORT · No coração da Amazônia</p>
+  <span>+55 (92) 99999-0000 · reservas@dessanaresort.com.br</span>
+</footer>
+
+{% endblock %}

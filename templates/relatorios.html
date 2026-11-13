@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Relatórios | Dessana{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">ANÁLISE</div><h1>Relatórios</h1><p>Indicadores para apoiar as decisões do gestor.</p></div></div>
+<div class="report-cards"><div class="report-card"><span>Faturamento estimado</span><strong>R$ {{ '%.2f'|format(faturamento)|replace('.', ',') }}</strong><small>Com base nas reservas registradas</small></div><div class="report-card"><span>Categorias cadastradas</span><strong>{{ por_categoria|length }}</strong><small>Tipos de hospedagem</small></div><div class="report-card"><span>Status de reservas</span><strong>{{ por_status|length }}</strong><small>Categorias de operação</small></div></div>
+<div class="dashboard-grid"><div class="panel"><div class="panel-head"><div><h3>Quartos por categoria</h3></div></div>{% for x in por_categoria %}<div class="bar-row"><div><span>{{ x.nome }}</span><b>{{ x.quantidade }}</b></div><div class="bar"><i style="width: {{ [x.quantidade * 20, 100]|min }}%"></i></div></div>{% endfor %}</div><div class="panel"><div class="panel-head"><div><h3>Reservas por status</h3></div></div>{% for x in por_status %}<div class="status-row"><span class="status">{{ x.status }}</span><strong>{{ x.quantidade }}</strong></div>{% else %}<div class="empty">Sem dados.</div>{% endfor %}</div></div>
+{% endblock %}

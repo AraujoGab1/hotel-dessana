@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Experiências | Dessana Amazon Resort{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">AMAZÔNIA</div><h1>Experiências exclusivas</h1><p>Viva momentos únicos em perfeita harmonia com a floresta.</p></div>
+</div>
+
+<div class="experience-grid">
+  {% for e in experiencias %}
+  <div class="experience-card" style="background-image:linear-gradient(0deg,rgba(6,20,15,.92) 5%,rgba(6,20,15,.15) 60%),url('{{ url_for('static', filename='images/' ~ (e.imagem or 'guest/hero-rio.jpg')) }}');">
+    <span class="experience-tag">{{ e.icone or '🌿' }} {{ e.categoria }}</span>
+    <div class="experience-copy">
+      <h3>{{ e.titulo }}</h3>
+      <p>{{ e.descricao }}</p>
+      {% if e.duracao %}<span class="experience-duration">⏱ {{ e.duracao }}</span>{% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="empty">Nenhuma experiência cadastrada no momento.</div>
+  {% endfor %}
+</div>
+{% endblock %}

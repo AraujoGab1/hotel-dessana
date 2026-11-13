@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dessana Amazon Resort{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+{% if session.get('user_id') %}
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">D</div>
+      <div>
+        <strong>DESSANA</strong>
+        <span>AMAZON RESORT</span>
+        <small>ALL INCLUSIVE</small>
+      </div>
+    </div>
+    {% if session.get('tipo') == 'hospede' %}
+    <div class="side-label">PORTAL DO HÓSPEDE</div>
+    <nav>
+      <a class="{{ 'active' if request.endpoint == 'hospede_dashboard' }}" href="{{ url_for('hospede_dashboard') }}">🏠 <span>Dashboard</span></a>
+      <a class="{{ 'active' if request.endpoint in ['hospede_quartos','hospede_quarto_detalhe'] }}" href="{{ url_for('hospede_quartos') }}">🛏️ <span>Quartos</span></a>
+      <a class="{{ 'active' if request.endpoint == 'hospede_quartos' }}" href="{{ url_for('hospede_quartos') }}">📅 <span>Reservas</span></a>
+      <a class="{{ 'active' if request.endpoint == 'minhas_reservas' }}" href="{{ url_for('minhas_reservas') }}">📋 <span>Minhas Reservas</span></a>
+      <a class="{{ 'active' if request.endpoint == 'hospede_experiencias' }}" href="{{ url_for('hospede_experiencias') }}">🌿 <span>Experiências</span></a>
+      <a class="{{ 'active' if request.endpoint == 'hospede_lazer' }}" href="{{ url_for('hospede_lazer') }}">🌴 <span>Área de Lazer</span></a>
+      <a class="{{ 'active' if request.endpoint == 'hospede_contato' }}" href="{{ url_for('hospede_contato') }}">✉️ <span>Contato</span></a>
+      <a class="{{ 'active' if request.endpoint == 'hospede_perfil' }}" href="{{ url_for('hospede_perfil') }}">👤 <span>Meu Perfil</span></a>
+      <a href="{{ url_for('administracao') }}">🔐 <span>Acesso Administrativo</span></a>
+    </nav>
+    {% else %}
+    <div class="side-label">ADMINISTRAÇÃO</div>
+    <nav>
+      <a class="{{ 'active' if request.endpoint == 'dashboard' }}" href="{{ url_for('dashboard') }}">⌂ <span>Dashboard</span></a>
+      <a class="{{ 'active' if request.endpoint == 'hospedes' }}" href="{{ url_for('hospedes') }}">♙ <span>Hóspedes</span></a>
+      <a class="{{ 'active' if request.endpoint in ['categorias','categoria_imagens'] }}" href="{{ url_for('categorias') }}">◇ <span>Categorias</span></a>
+      <a class="{{ 'active' if request.endpoint == 'quartos' }}" href="{{ url_for('quartos') }}">▣ <span>Quartos</span></a>
+      <a class="{{ 'active' if request.endpoint == 'reservas' }}" href="{{ url_for('reservas') }}">◷ <span>Reservas</span></a>
+      <a class="{{ 'active' if request.endpoint == 'experiencias_admin' }}" href="{{ url_for('experiencias_admin') }}">🌿 <span>Experiências</span></a>
+      <a class="{{ 'active' if request.endpoint == 'lazer_admin' }}" href="{{ url_for('lazer_admin') }}">🌴 <span>Área de Lazer</span></a>
+      <a class="{{ 'active' if request.endpoint == 'usuarios' }}" href="{{ url_for('usuarios') }}">♙ <span>Usuários</span></a>
+      <a class="{{ 'active' if request.endpoint == 'relatorios' }}" href="{{ url_for('relatorios') }}">▥ <span>Relatórios</span></a>
+    </nav>
+    {% endif %}
+    <div class="sidebar-bottom">
+      <div class="eco-badge">🌿 No coração da Amazônia</div>
+      <a class="logout" href="{{ url_for('logout') }}">↪ Sair</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      <div class="top-location">🌿 NO CORAÇÃO DA AMAZÔNIA</div>
+      <div class="top-user">
+        <span>{{ session.get('user_name') }}</span>
+        <div class="avatar">{{ session.get('user_name','A')[0] }}</div>
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }} <button onclick="this.parentElement.remove()">×</button></div>
+        {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <section class="content">
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+</div>
+{% else %}
+  {% block public_content %}{% endblock %}
+{% endif %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

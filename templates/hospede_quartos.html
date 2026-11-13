@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Quartos | Dessana Amazon Resort{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">ACOMODAÇÕES</div><h1>Nossos quartos</h1><p>Escolha a acomodação perfeita para sua estadia na Amazônia.</p></div>
+</div>
+<div class="guest-booking-guide">
+  <div class="guest-booking-guide-icon">✦</div>
+  <div><strong>Encontre seu refúgio ideal</strong><p>Compare as acomodações, confira a capacidade e as comodidades e selecione <b>Reservar</b> para informar suas datas de entrada e saída.</p></div>
+  <div class="guest-booking-steps"><span>01 <small>Escolha o quarto</small></span><i></i><span>02 <small>Informe as datas</small></span><i></i><span>03 <small>Confirme os dados</small></span></div>
+</div>
+
+<div class="photo-cards-grid">
+  {% for c in categorias %}
+  <div class="photo-card">
+    <a href="{{ url_for('hospede_quarto_detalhe', id=c.id) }}" style="display:block;">
+      <div class="photo-card-img" style="background-image:url('{{ url_for('static', filename='images/' ~ (c.imagem or 'guest/hero-rio.jpg')) }}');">
+        <span class="photo-card-tag">{% if c.disponiveis > 0 %}{{ c.disponiveis }} disponível(is){% else %}Indisponível{% endif %}</span>
+      </div>
+    </a>
+    <div class="photo-card-body">
+      <h3><a href="{{ url_for('hospede_quarto_detalhe', id=c.id) }}" style="color:inherit;text-decoration:none;">{{ c.nome }}</a></h3>
+      <p>{{ c.descricao or 'Acomodação premium do resort.' }}</p>
+      <div class="amenity-tags">
+        {% for a in (c.comodidades or '').split(',') %}{% if a.strip() %}<span class="amenity-tag">{{ a.strip() }}</span>{% endif %}{% endfor %}
+      </div>
+      <div class="room-meta">
+        <span>👥 Até {{ c.capacidade }} pessoas{% if c.metragem %} · {{ c.metragem }}{% endif %}</span>
+        <strong>R$ {{ '%.2f'|format(c.valor_diaria)|replace('.', ',') }}<small>/noite</small></strong>
+      </div>
+      <button class="primary-btn small" style="width:100%;margin-top:16px;justify-content:center;" {% if c.disponiveis == 0 %}disabled{% endif %} onclick="abrirReserva({{ c.id }}, '{{ c.nome }}', {{ c.capacidade }}, {{ c.valor_diaria }})">RESERVAR</button>
+    </div>
+  </div>
+  {% else %}
+  <div class="empty">Nenhuma acomodação cadastrada no momento.</div>
+  {% endfor %}
+</div>
+
+<div class="modal" id="modal-reserva-hospede">
+  <div class="modal-card">
+    <button class="close" onclick="closeModal('modal-reserva-hospede')">×</button>
+    <div class="eyebrow">NOVA RESERVA</div>
+    <h2 id="reserva-titulo">Reservar acomodação</h2>
+    <form method="post" action="{{ url_for('hospede_nova_reserva') }}" class="form-grid">
+      <input type="hidden" name="categoria_id" id="reserva-categoria-id">
+      <div><label>Data de entrada</label><input type="date" name="data_entrada" id="reserva-entrada" required></div>
+      <div><label>Data de saída</label><input type="date" name="data_saida" id="reserva-saida" required></div>
+      <div><label>Quantidade de hóspedes</label><input type="number" name="quantidade_hospedes" id="reserva-quantidade" min="1" value="2" required></div>
+      <div><label>Valor da diária</label><input id="reserva-valor" disabled></div>
+      <div class="full"><label>Observações (opcional)</label><textarea name="observacoes" placeholder="Preferências, horário de chegada, ocasião especial..."></textarea></div>
+      <div class="full availability-note">✓ Ao confirmar, verificamos automaticamente a disponibilidade para o período escolhido.</div>
+      <div class="full form-actions">
+        <button type="button" class="secondary-btn" onclick="closeModal('modal-reserva-hospede')">Cancelar</button>
+        <button class="primary-btn">Confirmar reserva</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function abrirReserva(id, nome, capacidade, valor) {
+  document.getElementById('reserva-titulo').innerText = 'Reservar: ' + nome;
+  document.getElementById('reserva-categoria-id').value = id;
+  document.getElementById('reserva-quantidade').max = capacidade;
+  document.getElementById('reserva-valor').value = 'R$ ' + valor.toFixed(2).replace('.', ',') + ' / noite';
+  openModal('modal-reserva-hospede');
+}
+</script>
+{% endblock %}

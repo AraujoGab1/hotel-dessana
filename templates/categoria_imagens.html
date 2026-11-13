@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Galeria | {{ categoria.nome }}{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">GALERIA DE FOTOS</div><h1>{{ categoria.nome }}</h1><p>Gerencie as imagens exibidas na página de detalhes desta acomodação.</p></div>
+  <a href="{{ url_for('categorias') }}" class="secondary-btn small">← Voltar para categorias</a>
+</div>
+
+<div class="panel">
+  <div class="panel-head"><div><h3>Adicionar imagem</h3><p>Informe o caminho relativo dentro de /static/images/</p></div></div>
+  <form method="post" action="{{ url_for('salvar_categoria_imagem', id=categoria.id) }}" class="form-grid">
+    <div class="full"><label>Caminho da imagem</label><input name="url" placeholder="guest/nome-da-foto.jpg" required></div>
+    <div class="full form-actions"><button class="primary-btn">Adicionar à galeria</button></div>
+  </form>
+</div>
+
+<div class="photo-cards-grid" style="margin-top:24px;">
+  {% for img in imagens %}
+  <div class="photo-card">
+    <div class="photo-card-img" style="background-image:url('{{ url_for('static', filename='images/' ~ img.url) }}');">
+      <span class="photo-card-tag">#{{ loop.index }}</span>
+    </div>
+    <div class="photo-card-body">
+      <p style="word-break:break-all;">{{ img.url }}</p>
+      <form method="post" action="{{ url_for('excluir_categoria_imagem', img_id=img.id) }}" onsubmit="return confirm('Remover esta imagem da galeria?')" style="margin-top:auto;">
+        <button class="icon-btn danger" style="width:100%;">Remover</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div class="empty">Nenhuma imagem cadastrada para esta acomodação ainda.</div>
+  {% endfor %}
+</div>
+{% endblock %}

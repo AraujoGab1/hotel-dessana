@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Meu Perfil | Dessana Amazon Resort{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">CONTA</div><h1>Meu perfil</h1><p>Mantenha seus dados atualizados para uma estadia sem contratempos.</p></div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="panel">
+    <div class="panel-head"><div><h3>Dados pessoais</h3><p>Nome, telefone e e-mail de contato</p></div></div>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="form_type" value="dados">
+      <div class="full"><label>Nome completo</label><input name="nome" value="{{ hospede.nome }}" required></div>
+      <div><label>Telefone</label><input name="telefone" value="{{ hospede.telefone or '' }}"></div>
+      <div><label>E-mail</label><input type="email" name="email" value="{{ hospede.email or '' }}" required></div>
+      <div class="full form-actions"><button class="primary-btn">Salvar alterações</button></div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div><h3>Alterar senha</h3><p>Use uma senha segura e pessoal</p></div></div>
+    <form method="post" class="form-grid">
+      <input type="hidden" name="form_type" value="senha">
+      <div class="full"><label>Senha atual</label><input type="password" name="senha_atual" required></div>
+      <div><label>Nova senha</label><input type="password" name="nova_senha" required></div>
+      <div><label>Confirmar nova senha</label><input type="password" name="confirmar_senha" required></div>
+      <div class="full form-actions"><button class="primary-btn">Alterar senha</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

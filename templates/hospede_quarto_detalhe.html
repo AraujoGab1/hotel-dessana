@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}{{ categoria.nome }} | Dessana Amazon Resort{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">ACOMODAÇÕES</div><h1>{{ categoria.nome }}</h1><p>{{ categoria.metragem or '' }}{% if categoria.metragem %} · {% endif %}Até {{ categoria.capacidade }} pessoas</p></div>
+  <a href="{{ url_for('hospede_quartos') }}" class="secondary-btn small">← Voltar aos quartos</a>
+</div>
+
+<div class="room-detail-gallery">
+  <div class="room-detail-main" id="galeria-principal" style="background-image:url('{{ url_for('static', filename='images/' ~ imagens[0].url) }}');"></div>
+  {% if imagens|length > 1 %}
+  <div class="room-detail-thumbs">
+    {% for img in imagens %}
+    <div class="room-detail-thumb {{ 'active' if loop.first }}" style="background-image:url('{{ url_for('static', filename='images/' ~ img.url) }}');" onclick="trocarFoto(this, '{{ url_for('static', filename='images/' ~ img.url) }}')"></div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<div class="dashboard-grid" style="margin-top:28px;">
+  <div class="panel">
+    <div class="panel-head"><div><h3>Sobre esta acomodação</h3></div></div>
+    <p style="color:var(--muted);font-size:13px;line-height:1.9;">{{ categoria.descricao }}</p>
+    <div class="amenity-tags" style="margin-top:18px;">
+      {% for a in (categoria.comodidades or '').split(',') %}{% if a.strip() %}<span class="amenity-tag">{{ a.strip() }}</span>{% endif %}{% endfor %}
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><div><h3>Reservar</h3></div></div>
+    <div class="room-meta" style="margin-bottom:16px;">
+      <span>👥 Até {{ categoria.capacidade }} pessoas{% if categoria.metragem %} · 📐 {{ categoria.metragem }}{% endif %}</span>
+      <strong>R$ {{ '%.2f'|format(categoria.valor_diaria)|replace('.', ',') }}<small>/noite</small></strong>
+    </div>
+    {% if categoria.disponiveis > 0 %}
+    <button class="primary-btn" style="width:100%;justify-content:center;" onclick="abrirReserva({{ categoria.id }}, '{{ categoria.nome }}', {{ categoria.capacidade }}, {{ categoria.valor_diaria }})">RESERVAR AGORA</button>
+    {% else %}
+    <button class="primary-btn" style="width:100%;justify-content:center;" disabled>SEM DISPONIBILIDADE</button>
+    {% endif %}
+  </div>
+</div>
+
+<div class="modal" id="modal-reserva-hospede">
+  <div class="modal-card">
+    <button class="close" onclick="closeModal('modal-reserva-hospede')">×</button>
+    <div class="eyebrow">NOVA RESERVA</div>
+    <h2 id="reserva-titulo">Reservar acomodação</h2>
+    <form method="post" action="{{ url_for('hospede_nova_reserva') }}" class="form-grid">
+      <input type="hidden" name="categoria_id" id="reserva-categoria-id">
+      <div><label>Data de entrada</label><input type="date" name="data_entrada" id="reserva-entrada" required></div>
+      <div><label>Data de saída</label><input type="date" name="data_saida" id="reserva-saida" required></div>
+      <div><label>Quantidade de hóspedes</label><input type="number" name="quantidade_hospedes" id="reserva-quantidade" min="1" value="2" required></div>
+      <div><label>Valor da diária</label><input id="reserva-valor" disabled></div>
+      <div class="full"><label>Observações (opcional)</label><textarea name="observacoes" placeholder="Preferências, horário de chegada, ocasião especial..."></textarea></div>
+      <div class="full availability-note">✓ Ao confirmar, verificamos automaticamente a disponibilidade para o período escolhido.</div>
+      <div class="full form-actions">
+        <button type="button" class="secondary-btn" onclick="closeModal('modal-reserva-hospede')">Cancelar</button>
+        <button class="primary-btn">Confirmar reserva</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function trocarFoto(el, url) {
+  document.getElementById('galeria-principal').style.backgroundImage = "url('" + url + "')";
+  document.querySelectorAll('.room-detail-thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function abrirReserva(id, nome, capacidade, valor) {
+  document.getElementById('reserva-titulo').innerText = 'Reservar: ' + nome;
+  document.getElementById('reserva-categoria-id').value = id;
+  document.getElementById('reserva-quantidade').max = capacidade;
+  document.getElementById('reserva-valor').value = 'R$ ' + valor.toFixed(2).replace('.', ',') + ' / noite';
+  openModal('modal-reserva-hospede');
+}
+</script>
+{% endblock %}

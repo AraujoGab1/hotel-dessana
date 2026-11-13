@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Criar conta | Dessana Amazon Resort{% endblock %}
+{% block public_content %}
+<div class="login-page">
+  <div class="login-visual" style="background:linear-gradient(rgba(10,32,24,.48),rgba(10,32,24,.82)),url('{{ url_for('static', filename='images/guest/hero-rio.jpg') }}') center/cover;">
+    <div class="login-visual-content">
+      <div class="brand-mark large">D</div>
+      <h1>Dessana<br><span>Amazon Resort</span></h1>
+      <p>Crie sua conta e viva a Amazônia.</p>
+    </div>
+  </div>
+  <div class="login-panel">
+    <a href="{{ url_for('home') }}" class="back">← Voltar ao início</a>
+    <div class="login-box">
+      <div class="eyebrow">PORTAL DO HÓSPEDE</div>
+      <h2>Criar sua conta.</h2>
+      <p>Cadastre-se para gerenciar suas reservas no Dessana Amazon Resort.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+      {% endwith %}
+      <form method="post">
+        <label>Nome completo</label>
+        <input name="nome" value="{{ nome or '' }}" placeholder="Seu nome" required>
+        <label>E-mail</label>
+        <input type="email" name="email" value="{{ email or '' }}" placeholder="seuemail@exemplo.com" required>
+        <label>Telefone</label>
+        <input name="telefone" value="{{ telefone or '' }}" placeholder="(00) 00000-0000">
+        <label>Senha</label>
+        <input type="password" name="senha" placeholder="••••••••" required>
+        <label>Confirmar senha</label>
+        <input type="password" name="confirmar_senha" placeholder="••••••••" required>
+        <button class="primary-btn" type="submit">CRIAR CONTA →</button>
+      </form>
+      <div class="demo-login">Já tem uma conta? <a href="{{ url_for('login') }}" style="color:var(--gold);font-weight:700;">Fazer login</a></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

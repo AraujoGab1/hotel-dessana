@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Contato | Dessana Amazon Resort{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">FALE CONOSCO</div><h1>Contato</h1><p>Estamos à disposição para tornar sua estadia inesquecível.</p></div>
+</div>
+
+<div class="dashboard-grid">
+  <div class="panel">
+    <div class="panel-head"><div><h3>Envie uma mensagem</h3><p>Respondemos em até 24 horas</p></div></div>
+    <form method="post" class="form-grid">
+      <div><label>Nome</label><input name="nome" value="{{ session.get('user_name','') }}" required></div>
+      <div><label>E-mail</label><input type="email" name="email" required></div>
+      <div class="full"><label>Assunto</label><input name="assunto" placeholder="Ex.: Dúvida sobre minha reserva"></div>
+      <div class="full"><label>Mensagem</label><textarea name="mensagem" required placeholder="Escreva sua mensagem..."></textarea></div>
+      <div class="full form-actions"><button class="primary-btn">Enviar mensagem</button></div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><div><h3>Informações de contato</h3><p>Fale diretamente conosco</p></div></div>
+    <div class="contact-info-list">
+      <div><span>📞 Telefone</span><b>+55 (92) 99999-0000</b></div>
+      <div><span>✉️ E-mail</span><b>reservas@dessanaresort.com.br</b></div>
+      <div><span>📍 Localização</span><b>Rio Amazonas, Amazonas — Brasil</b></div>
+    </div>
+    <div class="eco-badge" style="margin-top:22px;">🌿 No coração da Amazônia</div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Login | Dessana Amazon Resort{% endblock %}
+{% block public_content %}
+<div class="login-page">
+  <div class="login-visual">
+    <div class="login-visual-content">
+      <div class="brand-mark large">D</div>
+      <h1>Dessana<br><span>Amazon Resort</span></h1>
+      <p>No coração da Amazônia.</p>
+    </div>
+  </div>
+  <div class="login-panel">
+    <a href="{{ url_for('home') }}" class="back">← Voltar ao início</a>
+    <div class="login-box">
+      <div class="eyebrow">ÁREA ADMINISTRATIVA</div>
+      <h2>Gestão do hotel.</h2>
+      <p>Entre para gerenciar hóspedes, reservas, quartos, disponibilidade e relatórios do resort.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+      {% endwith %}
+      <form method="post">
+        {% if destino == 'admin' or request.args.get('proximo') == 'admin' %}<input type="hidden" name="destino" value="admin">{% endif %}
+        <label>E-mail</label>
+        <input type="email" name="email" placeholder="seuemail@exemplo.com" required>
+        <label>Senha</label>
+        <input type="password" name="senha" placeholder="••••••••" required>
+        <button class="primary-btn" type="submit">ENTRAR →</button>
+      </form>
+      <div class="demo-login">
+        Acesso administrativo de demonstração: <b>admin@dessana.com</b> · <b>admin123</b><br>
+        É hóspede e ainda não tem acesso? <a href="{{ url_for('cadastro') }}" style="color:var(--gold);font-weight:700;">Crie sua conta</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

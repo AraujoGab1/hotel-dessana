@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Quartos | Dessana{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">ESTRUTURA</div><h1>Quartos & acomodações</h1><p>Controle a disponibilidade física do resort.</p></div><button class="primary-btn small" onclick="openModal('modal-quarto')">+ NOVO QUARTO</button></div>
+<div class="room-grid">
+{% for q in quartos %}<div class="room-tile"><div class="room-number">{{ q.numero }}</div><div><span class="status {{ q.status|lower }}">{{ q.status }}</span><h3>{{ q.categoria }}</h3><p>{{ q.observacoes or 'Sem observações.' }}</p></div></div>{% else %}<div class="empty">Nenhum quarto cadastrado.</div>{% endfor %}
+</div>
+<div class="modal" id="modal-quarto"><div class="modal-card"><button class="close" onclick="closeModal('modal-quarto')">×</button><div class="eyebrow">NOVO QUARTO</div><h2>Cadastrar acomodação</h2><form method="post" action="{{ url_for('salvar_quarto') }}" class="form-grid"><div><label>Número / código</label><input name="numero" required></div><div><label>Categoria</label><select name="categoria_id" required>{% for c in categorias %}<option value="{{ c.id }}">{{ c.nome }}</option>{% endfor %}</select></div><div><label>Status</label><select name="status"><option>Disponível</option><option>Ocupado</option><option>Manutenção</option></select></div><div><label>Observações</label><input name="observacoes"></div><div class="full form-actions"><button type="button" class="secondary-btn" onclick="closeModal('modal-quarto')">Cancelar</button><button class="primary-btn">Salvar quarto</button></div></form></div></div>
+{% endblock %}

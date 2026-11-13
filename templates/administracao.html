@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Central Administrativa | Dessana Amazon Resort{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <div><div class="eyebrow">GESTÃO DO HOTEL</div><h1>Central Administrativa</h1><p>Gerencie os cadastros e acompanhe a operação do Dessana Amazon Resort.</p></div>
+  <a class="primary-btn" href="{{ url_for('dashboard') }}">Ver dashboard operacional →</a>
+</div>
+<div class="stat-grid">
+  <div class="stat-card"><div class="stat-icon">♙</div><span>Hóspedes cadastrados</span><strong>{{ totais.hospedes }}</strong><a href="{{ url_for('hospedes') }}">Gerenciar hóspedes →</a></div>
+  <div class="stat-card"><div class="stat-icon">◷</div><span>Reservas</span><strong>{{ totais.reservas }}</strong><a href="{{ url_for('reservas') }}">Gerenciar reservas →</a></div>
+  <div class="stat-card"><div class="stat-icon">▣</div><span>Quartos</span><strong>{{ totais.quartos }}</strong><a href="{{ url_for('quartos') }}">Ver quartos →</a></div>
+  <div class="stat-card"><div class="stat-icon">◇</div><span>Categorias de acomodação</span><strong>{{ totais.categorias }}</strong><a href="{{ url_for('categorias') }}">Editar categorias →</a></div>
+</div>
+<div class="dashboard-grid admin-hub-grid">
+  <div class="panel"><div class="panel-head"><div><h3>Hospedagem e atendimento</h3><p>Cadastros usados na rotina diária do hotel</p></div></div><div class="admin-actions">
+    <a href="{{ url_for('hospedes') }}"><b>♙ Cadastro de hóspedes</b><span>Consultar e atualizar dados de contato.</span></a>
+    <a href="{{ url_for('reservas') }}"><b>◷ Reservas e calendário</b><span>Ver hóspedes, entrada, saída, acomodação e status.</span></a>
+    <a href="{{ url_for('quartos') }}"><b>▣ Quartos e disponibilidade</b><span>Administrar quartos e situação de ocupação.</span></a>
+    <a href="{{ url_for('relatorios') }}"><b>▥ Relatórios</b><span>Consultar os indicadores da operação.</span></a>
+  </div></div>
+  <div class="panel"><div class="panel-head"><div><h3>Configurações do resort</h3><p>Conteúdo e acessos internos</p></div></div><div class="admin-actions">
+    <a href="{{ url_for('categorias') }}"><b>◇ Categorias e tarifas</b><span>Preços, descrições e imagens das acomodações.</span></a>
+    <a href="{{ url_for('usuarios') }}"><b>♙ Usuários e funcionários</b><span>Gerenciar os acessos administrativos.</span><small>{{ totais.usuarios }} usuário(s) cadastrado(s)</small></a>
+    <a href="{{ url_for('experiencias_admin') }}"><b>🌿 Experiências</b><span>Atualizar atividades oferecidas aos hóspedes.</span></a>
+    <a href="{{ url_for('lazer_admin') }}"><b>🌴 Área de lazer</b><span>Editar as informações dos espaços do resort.</span></a>
+  </div></div>
+</div>
+<style>
+.admin-hub-grid{margin-top:22px}.admin-actions{display:grid;gap:10px}.admin-actions a{display:block;padding:14px 16px;border:1px solid var(--line,#e5e0d6);border-radius:12px;text-decoration:none;color:inherit;background:rgba(255,255,255,.55)}.admin-actions a:hover{border-color:var(--gold,#b99a55);transform:translateY(-1px)}.admin-actions b,.admin-actions span,.admin-actions small{display:block}.admin-actions b{margin-bottom:5px}.admin-actions span,.admin-actions small{font-size:.88rem;color:var(--muted,#777);line-height:1.5}.stat-card a{display:inline-block;margin-top:12px;color:var(--gold,#96783d);font-size:.88rem;text-decoration:none;font-weight:700}
+</style>
+{% endblock %}
